@@ -18,10 +18,12 @@ class PageSitemapPropertiesMeta(CMSToolbar):
     def populate(self):
         # always use draft if we have a page
         self.page = get_page_draft(self.request.current_page)
+        # If not a page or if a page type, nothing to do
+           not using "or" to ensure code coverage checking
         if not self.page:
-            # Nothing to do
             return
-
+        if self.page.is_page_type:
+            return
         # check global permissions if CMS_PERMISSIONS is active
         if get_cms_setting("PERMISSION"):
             has_global_current_page_change_permission = has_page_permission(
